@@ -1,0 +1,29 @@
+# Security & Credentials
+.env
+.env.local
+*.pem
+
+# Python Virtual Environments
+venv/
+env/
+.venv/
+bin/
+lib/
+include/
+
+# Node dependencies (Frontend)
+node_modules/
+.eslintcache
+
+# Build folders
+dist/
+build/
+out/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# OS specific files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: travel_db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - travel_network
+
+  backend:
+    build: .
+    container_name: travel_backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - travel_network
+
+  frontend:
+    build: ./travel-frontend
+    container_name: travel_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./travel-frontend:/app
+      - /app/node_modules
+    environment:
+      - WDS_SOCKET_PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    stdin_open: true              # <--- HELPS REACT STAY ALIVE IN DOCKER
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - travel_network
+
+networks:
+  travel_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
