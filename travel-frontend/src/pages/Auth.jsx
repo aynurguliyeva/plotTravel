@@ -11,6 +11,11 @@ const Auth = ({ onAuth, loading }) => {
     onAuth(email, pass, isRegistering);
   };
 
+  // --- NEW: Guest Logic ---
+  const handleGuestLogin = () => {
+    onAuth('guest@plottravel.com', 'guest123', false);
+  };
+
   return (
     <motion.div 
       style={styles.container}
@@ -55,6 +60,18 @@ const Auth = ({ onAuth, loading }) => {
             {loading ? 'Please wait...' : (isRegistering ? 'Sign up' : 'Sign in')}
           </motion.button>
         </form>
+
+        {/* --- NEW: Guest Login Button --- */}
+        {!isRegistering && (
+          <motion.button
+            onClick={handleGuestLogin}
+            style={styles.guestButton}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Try as Guest ✨
+          </motion.button>
+        )}
         
         <div style={styles.footer}>
           <button 
@@ -117,6 +134,67 @@ const styles = {
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
+  },
+ container: {
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#F7F7F7',
+  },
+  card: {
+    width: '400px',
+    background: '#FFFFFF',
+    borderRadius: '16px',
+    padding: '40px',
+    boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+  },
+  title: {
+    fontSize: '28px',
+    fontWeight: '600',
+    color: '#222222',
+    marginBottom: '8px',
+  },
+  subtitle: {
+    fontSize: '16px',
+    color: '#717171',
+    marginBottom: '32px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    marginBottom: '24px',
+  },
+  input: {
+    padding: '16px',
+    borderRadius: '12px',
+    border: '1px solid #DDDDDD',
+    fontSize: '16px',
+    outline: 'none',
+  },
+  submit: {
+    padding: '16px',
+    background: '#FF385C',
+    color: '#FFFFFF',
+    border: 'none',
+    borderRadius: '12px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
+  // ADD THIS NEW STYLE
+  guestButton: {
+    width: '100%',
+    padding: '14px',
+    background: 'transparent',
+    color: '#FF385C',
+    border: '2px solid #FF385C',
+    borderRadius: '12px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    marginBottom: '20px',
   },
   footer: {
     textAlign: 'center',
